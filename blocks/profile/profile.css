@@ -1,0 +1,19 @@
+@import url(./__figure/profile__figure.css);
+@import url(./__image/profile__image.css);
+@import url(./__info/profile__info.css);
+@import url(./__header/profile__header.css);
+@import url(./__edit-button/profile__edit-button.css);
+@import url(./__add-button/profile__add-button.css);
+@import url(./__subheader/profile__subheader.css);
+
+.profile {
+  padding: 40px 0 51px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width : 768px) {
+  .profile {
+    padding-bottom: 0;
+  }
+}

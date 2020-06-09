@@ -1,0 +1,19 @@
+.profile__header {
+  font-size: 42px;
+  line-height: 1.33;
+  font-weight: 500;
+  margin: 0;
+  display: inline-block;
+}
+
+@media screen and (max-width : 768px) {
+  .profile__header {
+    padding: 37px 0 0 0;
+  }
+}
+
+@media screen and (max-width : 400px) {
+  .profile__header {
+    font-size: 27px;
+  }
+}
