@@ -9,3 +9,7 @@
   transition: opacity;
   opacity: 1.0;
 }
+
+.popup__close-button:hover {
+  opacity: 0.6;
+}

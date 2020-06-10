@@ -7,4 +7,14 @@
   font-size: 14px;
   line-height: 1.2;
   outline: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width : 400px) {
+  .popup__input {
+    font-size: 12px;
+    line-height: 1.2;
+  }
 }

@@ -13,13 +13,6 @@ function closePopup() {
 editButton.addEventListener('click', getPopup);
 closeButton.addEventListener('click', closePopup);
 
-
-
-
-
-
-
-
 // Находим форму в DOM
 let formElement = document.querySelector('.popup__form');
 
