@@ -9,6 +9,7 @@
   margin-left: auto;
   opacity: 1.0;
   transition: opacity;
+  cursor: pointer;
 }
 
 .profile__add-button:hover {
