@@ -2,14 +2,5 @@
   color: #000;
   font-size: 24px;
   line-height: 1.2;
-  min-height: 80px;
   font-weight: 900;
-  border-radius: 0 0 10px 10px;
-  padding: 25px 50px 0 21px;
-  box-sizing: border-box;
-  background: url('./../../../images/photo-grid-like.svg') #ffffff no-repeat;
-  background-position: right 18px center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }

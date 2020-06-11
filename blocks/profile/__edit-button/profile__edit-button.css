@@ -6,6 +6,7 @@
   border: 0px;
   opacity: 1.0;
   transition: opacity;
+  cursor: pointer;
 }
 
 .profile__edit-button:hover {
@@ -18,8 +19,5 @@
     background: url('./../../../images/profile-edit-button-small.svg') no-repeat;
     width: 18px;
     height: 18px;
-  }
-  .profile__edit-button:hover{
-    opacity: 0.6;
   }
 }
