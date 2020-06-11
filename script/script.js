@@ -11,9 +11,13 @@ let profileSubheader = document.querySelector('.profile__subheader');
 
 // Функция открывает/закрывает popup и вставляет значения в input
 function getPopup() {
-  nameInput.value = profileHeader.textContent;
-  jobInput.value = profileSubheader.textContent;
-  popup.classList.toggle('popup_opened');
+
+    popup.classList.toggle('popup_opened');
+
+    if (popup.classList.contains('popup_opened')) {
+    nameInput.value = profileHeader.textContent;
+    jobInput.value = profileSubheader.textContent;
+  }
 }
 
 // Находим форму в DOM
@@ -21,10 +25,6 @@ let formElement = document.querySelector('.popup__form');
 
 function formSubmitHandler (evt) {
      evt.preventDefault();
-
-    // Получите значение полей из свойства value
-    let name = nameInput.value;
-    let job = jobInput.value;
 
     // Вставьте новые значения с помощью textContent
     profileHeader.textContent = nameInput.value;

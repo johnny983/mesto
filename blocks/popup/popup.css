@@ -15,7 +15,3 @@
   position: fixed;
   display: none;
 }
-
-.popup_opened {
-  display: block;
-}
