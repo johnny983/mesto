@@ -9,8 +9,15 @@
   white-space: nowrap;
 }
 
+@media screen and (max-width : 768px) {
+  .profile__header {
+    max-width: 320px;
+  }
+}
+
 @media screen and (max-width : 400px) {
   .profile__header {
     font-size: 27px;
+    max-width: 260px;
   }
 }
