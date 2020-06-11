@@ -3,13 +3,10 @@
   line-height: 1.33;
   font-weight: 500;
   margin: 0;
-  display: inline-block;
-}
-
-@media screen and (max-width : 768px) {
-  .profile__header {
-    padding: 37px 0 0 0;
-  }
+  text-overflow: ellipsis;
+  max-width: 380px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 @media screen and (max-width : 400px) {

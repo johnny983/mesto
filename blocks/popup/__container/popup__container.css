@@ -12,12 +12,12 @@
 
 @media screen and (max-width : 550px) {
   .popup__container {
-    max-width: 330px;
+    max-width: 380px;
   }
 }
 
 @media screen and (max-width : 400px) {
   .popup__container {
-    max-width: 220px;
+    max-width: 300px;
   }
 }
