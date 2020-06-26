@@ -17,8 +17,10 @@
   opacity: 0.6;
 }
 
-@media screen and (max-width : 550px) {
+@media screen and (max-width : 550px), and (max-height : 360px) {
   .popup__close-button {
-    right: 0px;
+    right: 10px;
+    background: url('./../../../images/close-icon-black.svg');
+    top: 0px;
   }
 }

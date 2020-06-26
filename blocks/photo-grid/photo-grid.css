@@ -1,4 +1,5 @@
 @import url(./__item/photo-grid__item.css);
+@import url(./__trash-button/photo-grid__trash-button.css);
 @import url(./__image/photo-grid__image.css);
 @import url(./__data/photo-grid__data.css);
 @import url(./__caption/photo-grid__caption.css);

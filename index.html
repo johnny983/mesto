@@ -30,48 +30,16 @@
     </section>
 
     <section class="photo-grid">
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-karachaevsk.jpg" alt="церковь в окружении горых вершин" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Карачаевск</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-elbrus.jpg" alt="вид на гору из далека на закате солнца" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Эльбрус</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-dombai.jpg" alt="вид на горные вершины Домбая" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Домбай</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-kamchatka.jpg" alt="снежная горная вершина с высоты птичьего полета" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Камчатка</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-klin.jpg" alt="заброшенная здание церкви в поле" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Клин</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
-      <figure class="photo-grid__item">
-        <img src="images/photo-grid-khibiny.jpg" alt="заснеженные горные склоны" class="photo-grid__image">
-        <div class=photo-grid__data>
-          <p class="photo-grid__caption">Хибины</p>
-          <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
-        </div>
-      </figure>
+      <template class="photo-grid__template">
+        <figure class="photo-grid__item">
+          <button class="photo-grid__trash-button" type="button" aria-label="удалить"></button>
+          <img src="" alt="" class="photo-grid__image">
+          <div class=photo-grid__data>
+            <p class="photo-grid__caption"></p>
+            <button class="photo-grid__like-button" type="button" aria-label="лайк"></button>
+          </div>
+        </figure>
+      </template>
     </section>
   </main>
 
@@ -79,17 +47,38 @@
     <p class="footer__copyright">&copy;2020. Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <figure class="popup popup_zoom">
+    <div class="popup__figure">
+      <button class="popup__close-button" type="button" aria-label="закрыть"></button>
+      <img class="popup__image" src="#" alt="#">
+      <figcaption class="popup__caption"></figcaption>
+    </div>
+  </figure>
+
+  <div class="popup popup_edit">
     <div class="popup__container">
       <button class="popup__close-button" type="button" aria-label="закрыть"></button>
       <h2 class="popup__header">Редактировать профиль</h2>
-      <form class="popup__form" name="popup-form" method="post" action="#">
+      <form class="popup__edit-form" name="popup-edit-form" method="post" action="#">
         <input type="text" class="popup__input popup__input_name" placeholder="Имя" required name="popup-input-name">
         <input type="text" class="popup__input popup__input_job" placeholder="Род деятельности" required name="popup-input-job">
         <button type="submit" class="popup__button">Сохранить</button>
       </form>
     </div>
   </div>
+
+  <div class="popup popup_add">
+    <div class="popup__container">
+      <button class="popup__close-button" type="button" aria-label="закрыть"></button>
+      <h2 class="popup__header">Новое место</h2>
+      <form class="popup__add-form" name="popup-add-form" method="post" action="#">
+        <input type="text" class="popup__input popup__input_title" placeholder="Название" required name="popup-input-title">
+        <input type="url" class="popup__input popup__input_link" placeholder="Ссылка на картинку" required name="popup-input-link">
+        <button type="submit" class="popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
   <script src=script/script.js></script>
 </body>
 </html>
