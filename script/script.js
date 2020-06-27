@@ -1,3 +1,4 @@
+"use strict"
 // Находим элементы в DOM
 
 const closeButton = document.querySelectorAll('.popup__close-button')
@@ -29,9 +30,9 @@ const cardTemplateContent = photoGrid.querySelector('.photo-grid__template').con
 // Из этого массива создаем галерею
 
 const initialCards = [
-  {name: 'Карачаевск', 
-  link: 'images/photo-grid-karachaevsk.jpg',
-  alt: 'Церковь в окружении горых вершин'},
+  {name: 'Ольхон', 
+  link: 'images/photo-grid-olkhon.jpg',
+  alt: 'Каменная глыба посреди замерзжего озера'},
   {name: 'Эльбрус', 
   link: 'images/photo-grid-elbrus.jpg',
   alt: 'Вид на гору издали на закате солнца'},
@@ -51,34 +52,31 @@ const initialCards = [
 
 // Собираем галерею карточек с фотографиями на загрузке страницы из массива
 
-function makePhotoGrid() {
-  for (i = 0; i < initialCards.length; i++) {
-    card = cardTemplateContent.cloneNode(true)
-    card.querySelector('.photo-grid__image').src = initialCards[i].link
-    card.querySelector('.photo-grid__image').alt = initialCards[i].alt
-    card.querySelector('.photo-grid__caption').textContent = initialCards[i].name
-    photoGrid.append(card)
-  }
-}
-makePhotoGrid()
+initialCards.forEach((item) => {
+  const card = createCard(item);
+  photoGrid.append(card)
+})
 
-// Функция добавляет карточку при заполнении формы и обнуляет значения текстовых полей
+function createCard(item) {
+    let card = cardTemplateContent.cloneNode(true)
+    card.querySelector('.photo-grid__image').src = item.link
+    card.querySelector('.photo-grid__image').alt = item.alt
+    card.querySelector('.photo-grid__caption').textContent = item.name
+    return card
+  }
+
+// Добавляем карточку после заполнения формы
 
 function addCard() {
-  card = cardTemplateContent.cloneNode(true)
-  card.querySelector('.photo-grid__image').src = addPopupLinkInput.value
-  card.querySelector('.photo-grid__image').alt = addPopupTitleInput.value
-  card.querySelector('.photo-grid__caption').textContent = addPopupTitleInput.value
-  photoGrid.prepend(card)
-  addPopupLinkInput.value = ''
-  addPopupTitleInput.value = ''
+  const item = {name: addPopupTitleInput.value, link: addPopupLinkInput.value, value: addPopupTitleInput.value}
+  photoGrid.prepend(createCard(item))
 }
 
 // Удаляет карточку при нажатии на "мусорку"
 
 function removeCard(event) {
   if (event.target.classList.contains('photo-grid__trash-button')) {
-    event.target.parentElement.remove()
+    event.target.closest('.photo-grid__item').remove()
   }
 }
 
@@ -90,22 +88,18 @@ function toggleLike(event) {
   }
 }
 
-// Функция добавляет src и описание картинки
+// Функция добавления и удаления класса (делает видимым/невидимым попапы)
 
-function zoomPopupImages(event) {
-  if (event.target.classList.contains('photo-grid__image')) {
-    zoomPopupImage.src = event.target.src
-    zoomPopupCaption.textContent = event.target.nextElementSibling.children[0].textContent
-    togglePopup(zoomPopup)
-  }
+function togglePopup(popupName) {
+  popupName.classList.toggle('popup_opened')
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
 
-function addFormSubmitHandler (event) {
+function addFormSubmitHandler(event) {
   event.preventDefault()
-  togglePopup(addPopup)
   addCard()
+  togglePopup(addPopup)
 }
 
 // При сабмите формы редактирования профиля убираем ее с экрана и добавляем значения полей в нужные места
@@ -120,30 +114,41 @@ function editFormSubmitHandler(event) {
 // Функция вставляет значения в инпуты профайла
 
 function addInputValue() {
-  if (editPopup.classList.contains('popup_opened')) {
     editPopupNameInput.value = profileHeader.textContent
     editPopupJobInput.value = profileSubheader.textContent
-  }
 }
 
-// Функция добавления и удаления класса (делает видимым/невидимым попапы)
+// Очищаем инпуты
 
-function togglePopup(popupName) {
-  popupName.classList.toggle('popup_opened')
-  addInputValue()
+function clearInputs() {
+  addPopupLinkInput.value = ''
+  addPopupTitleInput.value = ''
+}
+
+// Функция добавляет src и описание картинки
+
+function zoomPopupImages(event) {
+  if (event.target.classList.contains('photo-grid__image')) {
+    zoomPopupImage.src = event.target.src
+    // Вы написали "Очень хардкодный путь .nextElementSibling.children[0] -- 
+    // у вас же есть alt, заберите название из event.target.alt!"
+    // Но тут нужен не alt а caption, я не нашел лучшего способа его помесить сюда :(
+    zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
+    togglePopup(zoomPopup)
+  }
 }
 
 // Функция закрывает любой попап при нажатии на "крестик"
 
 function chooseCloseButton(event) {
-  event.target.parentElement.parentElement.classList.toggle('popup_opened')
-  console.log(event.target.parentElement.parentElement)
-  console.log(event.target.style.animation)
+  event.target.closest('.popup_opened').classList.toggle('popup_opened')
 }
 
 profileEditButton.addEventListener('click', () => togglePopup(editPopup))
+profileEditButton.addEventListener('click', addInputValue)
+addButton.addEventListener('click', clearInputs)
 addButton.addEventListener('click', () => togglePopup(addPopup))
-closeButton.forEach(closeButton => closeButton.addEventListener("click", () => chooseCloseButton(event)))
+closeButton.forEach(closeButton => closeButton.addEventListener("click", chooseCloseButton))
 
 photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
