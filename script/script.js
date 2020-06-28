@@ -1,4 +1,5 @@
 "use strict"
+
 // Находим элементы в DOM
 
 const closeButton = document.querySelectorAll('.popup__close-button')
@@ -6,12 +7,12 @@ const closeButton = document.querySelectorAll('.popup__close-button')
 const editPopup = document.querySelector('.popup_edit')
 const editPopupNameInput  = editPopup.querySelector('.popup__input_name')
 const editPopupJobInput = editPopup.querySelector('.popup__input_job')
-const popupEditForm = editPopup.querySelector('.popup__edit-form');
+const editPopupForm = editPopup.querySelector('.popup__edit-form');
 
 const addPopup = document.querySelector('.popup_add')
 const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
-const popupAddForm = addPopup.querySelector('.popup__add-form')
+const addPopupForm = addPopup.querySelector('.popup__add-form')
 
 const zoomPopup = document.querySelector('.popup_zoom')
 const zoomPopupImage = zoomPopup.querySelector('.popup__image')
@@ -50,12 +51,7 @@ const initialCards = [
   alt: 'Заснеженные горные склоны'}
 ];
 
-// Собираем галерею карточек с фотографиями на загрузке страницы из массива
-
-initialCards.forEach((item) => {
-  const card = createCard(item);
-  photoGrid.append(card)
-})
+// Создаем карточку и добавляем путь картинки, альт-текст и название карточки.
 
 function createCard(item) {
     let card = cardTemplateContent.cloneNode(true)
@@ -65,10 +61,14 @@ function createCard(item) {
     return card
   }
 
-// Добавляем карточку после заполнения формы
+// Создаем объект и передаем его для создания карточки
 
 function addCard() {
-  const item = {name: addPopupTitleInput.value, link: addPopupLinkInput.value, value: addPopupTitleInput.value}
+  const item = {
+    name: addPopupTitleInput.value, 
+    link: addPopupLinkInput.value,
+    value: addPopupTitleInput.value
+  }
   photoGrid.prepend(createCard(item))
 }
 
@@ -121,8 +121,7 @@ function addInputValue() {
 // Очищаем инпуты
 
 function clearInputs() {
-  addPopupLinkInput.value = ''
-  addPopupTitleInput.value = ''
+  addPopupForm.reset()
 }
 
 // Функция добавляет src и описание картинки
@@ -130,9 +129,6 @@ function clearInputs() {
 function zoomPopupImages(event) {
   if (event.target.classList.contains('photo-grid__image')) {
     zoomPopupImage.src = event.target.src
-    // Вы написали "Очень хардкодный путь .nextElementSibling.children[0] -- 
-    // у вас же есть alt, заберите название из event.target.alt!"
-    // Но тут нужен не alt а caption, я не нашел лучшего способа его помесить сюда :(
     zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
     togglePopup(zoomPopup)
   }
@@ -144,19 +140,33 @@ function chooseCloseButton(event) {
   event.target.closest('.popup_opened').classList.toggle('popup_opened')
 }
 
-profileEditButton.addEventListener('click', () => togglePopup(editPopup))
-profileEditButton.addEventListener('click', addInputValue)
-addButton.addEventListener('click', clearInputs)
-addButton.addEventListener('click', () => togglePopup(addPopup))
+// Собираем галерею карточек с фотографиями на загрузке страницы из массива
+
+initialCards.forEach((item) => {
+  createCard(item);
+  photoGrid.append(createCard(item))
+})
+
+// Слушатели событий
+
+profileEditButton.addEventListener('click', () => {
+  addInputValue()
+  togglePopup(editPopup)
+})
+
+addButton.addEventListener('click', () => {
+  clearInputs()
+  togglePopup(addPopup)
+})
+
 closeButton.forEach(closeButton => closeButton.addEventListener("click", chooseCloseButton))
 
 photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
 photoGrid.addEventListener('click', removeCard)
 
-popupEditForm.addEventListener('submit', editFormSubmitHandler)
-popupAddForm.addEventListener('submit', addFormSubmitHandler)
-
+editPopupForm.addEventListener('submit', editFormSubmitHandler)
+addPopupForm.addEventListener('submit', addFormSubmitHandler)
 
 // function closeOverlay() {
 //   if (event.target !== event.currentTarget) { return }
