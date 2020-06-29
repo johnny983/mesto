@@ -54,7 +54,7 @@ const initialCards = [
 // Создаем карточку и добавляем путь картинки, альт-текст и название карточки.
 
 function createCard(item) {
-    let card = cardTemplateContent.cloneNode(true)
+    const card = cardTemplateContent.cloneNode(true)
     card.querySelector('.photo-grid__image').src = item.link
     card.querySelector('.photo-grid__image').alt = item.alt
     card.querySelector('.photo-grid__caption').textContent = item.name
@@ -141,9 +141,11 @@ function chooseCloseButton(event) {
 }
 
 // Собираем галерею карточек с фотографиями на загрузке страницы из массива
+// Извините я не понял, вы написали: "Код первичной загрузки стоит вынести в 
+// отдельный метод и вызвать его в конце скрипта. Так код будет лучше упорядочен."
+// Я как раз подумал что я это и сделал в этом кусочке кода.
 
 initialCards.forEach((item) => {
-  createCard(item);
   photoGrid.append(createCard(item))
 })
 
