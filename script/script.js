@@ -1,8 +1,7 @@
 "use strict"
 
 // Находим элементы в DOM
-
-const closeButton = document.querySelectorAll('.popup__close-button')
+const allPopups = document.querySelectorAll('.popup')
 
 const editPopup = document.querySelector('.popup_edit')
 const editPopupNameInput  = editPopup.querySelector('.popup__input_name')
@@ -13,6 +12,8 @@ const addPopup = document.querySelector('.popup_add')
 const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
 const addPopupForm = addPopup.querySelector('.popup__add-form')
+
+const popupButton = addPopup.querySelector('.popup__button')
 
 const zoomPopup = document.querySelector('.popup_zoom')
 const zoomPopupImage = zoomPopup.querySelector('.popup__image')
@@ -53,7 +54,7 @@ const initialCards = [
 
 // Создаем карточку и добавляем путь картинки, альт-текст и название карточки.
 
-function createCard(item) {
+const createCard = (item) => {
     const card = cardTemplateContent.cloneNode(true)
     card.querySelector('.photo-grid__image').src = item.link
     card.querySelector('.photo-grid__image').alt = item.alt
@@ -63,7 +64,7 @@ function createCard(item) {
 
 // Создаем объект и передаем его для создания карточки
 
-function addCard() {
+const addCard = () => {
   const item = {
     name: addPopupTitleInput.value, 
     link: addPopupLinkInput.value,
@@ -74,76 +75,70 @@ function addCard() {
 
 // Удаляет карточку при нажатии на "мусорку"
 
-function removeCard(event) {
+const removeCard = (event) => {
   if (event.target.classList.contains('photo-grid__trash-button')) {
     event.target.closest('.photo-grid__item').remove()
   }
 }
 
-// Активирует/деактивирует лайк
+// Активируем/деактивируем "лайк"
 
-function toggleLike(event) {
+const toggleLike = (event) => {
   if (event.target.classList.contains('photo-grid__like-button')) {
     event.target.classList.toggle('liked')
   }
 }
 
-// Функция добавления и удаления класса (делает видимым/невидимым попапы)
+// Делаем видимыми/невидимыми попапы добавлением класса
 
-function togglePopup(popupName) {
+const togglePopup = (popupName) => {
   popupName.classList.toggle('popup_opened')
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
 
-function addFormSubmitHandler(event) {
+const addFormSubmitHandler = (event) => {
   event.preventDefault()
   addCard()
   togglePopup(addPopup)
+  popupButton.setAttribute('disabled', '')
+  popupButton.classList.add('popup__button_inactive')
 }
 
 // При сабмите формы редактирования профиля убираем ее с экрана и добавляем значения полей в нужные места
 
-function editFormSubmitHandler(event) {
+const editFormSubmitHandler = (event) => {
   event.preventDefault()
   profileHeader.textContent = editPopupNameInput.value
   profileSubheader.textContent = editPopupJobInput.value
   togglePopup(editPopup);
 }
 
-// Функция вставляет значения в инпуты профайла
+// Вставляем значения в инпуты профайла
 
-function addInputValue() {
+const addInputValue = () => {
     editPopupNameInput.value = profileHeader.textContent
     editPopupJobInput.value = profileSubheader.textContent
 }
 
 // Очищаем инпуты
 
-function clearInputs() {
+const clearInputs = () => {
   addPopupForm.reset()
 }
 
-// Функция добавляет src и описание картинки
+// Добавляем src и описание картинки
 
-function zoomPopupImages(event) {
+const zoomPopupImages = (event) => {
   if (event.target.classList.contains('photo-grid__image')) {
     zoomPopupImage.src = event.target.src
     zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
     togglePopup(zoomPopup)
+    closePopupOnEsc()
   }
 }
 
-// Функция закрывает любой попап при нажатии на "крестик"
-
-function chooseCloseButton(event) {
-  event.target.closest('.popup_opened').classList.toggle('popup_opened')
-}
-
 // Собираем галерею карточек с фотографиями на загрузке страницы из массива
-// Извините я не понял, вы написали: "Код первичной загрузки стоит вынести в 
-// отдельный метод и вызвать его в конце скрипта. Так код будет лучше упорядочен."
-// Я как раз подумал что я это и сделал в этом кусочке кода.
 
 initialCards.forEach((item) => {
   photoGrid.append(createCard(item))
@@ -154,14 +149,40 @@ initialCards.forEach((item) => {
 profileEditButton.addEventListener('click', () => {
   addInputValue()
   togglePopup(editPopup)
+  closePopupOnEsc()
 })
 
 addButton.addEventListener('click', () => {
   clearInputs()
   togglePopup(addPopup)
+  closePopupOnEsc()
 })
 
-closeButton.forEach(closeButton => closeButton.addEventListener("click", chooseCloseButton))
+const addEscListeners = (event) => {
+    if (event.key === "Escape") { 
+      event.target.classList.remove('popup_opened')
+    }
+}
+
+// Закрываем попапы при нажатии "Esc"
+
+const closePopupOnEsc = () => allPopups.forEach(popup => {
+  if (popup.classList.contains('popup_opened')) {
+    popup.focus()
+    popup.addEventListener('keydown', addEscListeners)
+  } else {
+    popup.removeEventListener('keydown', addEscListeners)
+  }
+})
+
+// Закрываем попапы при нажатии на "overlay" или "крестик"
+
+allPopups.forEach(popup => popup.addEventListener('click', () => { 
+  if (event.target.classList.contains('popup__close-button') || 
+      event.target == event.currentTarget) { 
+      togglePopup(event.currentTarget) 
+    } return
+  }))
 
 photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
@@ -169,10 +190,3 @@ photoGrid.addEventListener('click', removeCard)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
-
-// function closeOverlay() {
-//   if (event.target !== event.currentTarget) { return }
-//   toggleEditPopup()
-// }
-
-// popup.addEventListener('click', closeOverlay)
