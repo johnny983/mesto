@@ -93,6 +93,20 @@ const toggleLike = (event) => {
 
 const togglePopup = (popupName) => {
   popupName.classList.toggle('popup_opened')
+  errorReset(popupName)
+}
+
+const errorReset = (popupName) => {
+  popupName.querySelectorAll('.popup__input').forEach(input => {
+    input.classList.remove('popup__input_type_error')
+  })
+  popupName.querySelectorAll('.popup__input-error').forEach(inputError => {
+    inputError.classList.remove('popup__input-error_active')
+  })
+  popupName.querySelectorAll('.popup__button').forEach(button => {
+    button.classList.remove('popup__button_inactive')
+    button.removeAttribute('disabled')
+  })
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
@@ -160,7 +174,7 @@ addButton.addEventListener('click', () => {
 
 const addEscListeners = (event) => {
     if (event.key === "Escape") { 
-      event.target.classList.remove('popup_opened')
+      event.currentTarget.classList.remove('popup_opened')
     }
 }
 
