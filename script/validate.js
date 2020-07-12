@@ -44,11 +44,7 @@ const hideInputError = (formElement, inputElement, config) => {
 // Записываем в переменную все формы на странице, для каждой формы делаем отмену дефолтного поведения на submit передаем форму в функцию установки обработчиков на инпуты.
   
   const enableValidation = (config) => {
-    const { formSelector, inputSelector, submitButtonSelector, 
-        inactiveButtonClass, inputErrorClass, errorClass } = config
-
-    const formList = Array.from(document.querySelectorAll(formSelector));
-
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
     formList.forEach(formElement => {
       formElement.addEventListener('submit', (event) => {
         event.preventDefault()
