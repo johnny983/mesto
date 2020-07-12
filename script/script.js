@@ -93,10 +93,12 @@ const toggleLike = (event) => {
 
 const togglePopup = (popupName) => {
   popupName.classList.toggle('popup_opened')
-  errorReset(popupName)
+  inputsErrorReset(popupName)
 }
 
-const errorReset = (popupName) => {
+// Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
+
+const inputsErrorReset = (popupName) => {
     if (popupName.classList.contains('popup_edit')) {
     popupName.querySelectorAll('.popup__input').forEach(input => {
       input.classList.remove('popup__input_type_error')
@@ -201,7 +203,7 @@ allPopups.forEach(popup => popup.addEventListener('click', () => {
   if (event.target.classList.contains('popup__close-button') || 
       event.target == event.currentTarget) { 
       togglePopup(event.currentTarget) 
-    } return
+    }
   }))
 
 photoGrid.addEventListener('click', zoomPopupImages)
