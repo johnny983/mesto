@@ -195,9 +195,18 @@ addButton.addEventListener('click', () => {
   openPopups(addPopup)
 })
 
+// !!!!!!!!!!!!!!!!!! Не могли бы вы подсказать почему данная функция не работает?
+
+// photoGrid.addEventListener('click', () => {
+//   toggleLike()
+//   removeCard()
+//   zoomPopupImages(event)
+//   openPopups(zoomPopup)
+// })
+
+photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
 photoGrid.addEventListener('click', removeCard)
-photoGrid.addEventListener('click', zoomPopupImages)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
