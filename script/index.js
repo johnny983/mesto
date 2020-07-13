@@ -103,8 +103,7 @@ const openPopups = (popupName) => {
 
 const closePopups = (popupName) => {
   popupName.classList.remove('popup_opened')
-  console.log(popupName)
-  inputsErrorReset(popupName)
+  inputsErrorsReset(popupName, config)
 }
 
 // Закрываем попапы при нажатии "Esc" и вызываем функцию удаления слушателя.
@@ -140,12 +139,12 @@ if (event.target.classList.contains('popup__close-button') ||
 
 // Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
 
-const inputsErrorReset = (popupName) => {
-  if (popupName.classList.contains('popup_zoom')) { return }
+const inputsErrorsReset = (popupName, config) => {
+  if (popupName === zoomPopup) { return }
   popupButton.removeAttribute('disabled', '')
-  popupButton.classList.remove('popup__button_inactive')
-  const formElement = popupName.querySelector('.popup__form')
-  formElement.querySelectorAll('.popup__input').forEach(inputElement => {
+  popupButton.classList.remove(config.inactiveButtonClass)
+  const formElement = popupName.querySelector(config.formSelector)
+  formElement.querySelectorAll(config.inputSelector).forEach(inputElement => {
     hideInputError(formElement, inputElement, config)
   })
 }
