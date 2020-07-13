@@ -28,6 +28,18 @@ const hideInputError = (formElement, inputElement, config) => {
     }
   };
 
+// Включаем/выключаем кнопку в зависимости от результата функции hasInvalidInput путем добавлени/   удаления класса и установки/удаления аттрибута disabled.
+
+const toggleButtonState = (inputList, buttonElement, config) => {
+    if (hasInvalidInput(inputList)) {
+      buttonElement.classList.add(config.inactiveButtonClass)
+      buttonElement.setAttribute('disabled', '')    
+    } else {
+      buttonElement.classList.remove(config.inactiveButtonClass)
+      buttonElement.removeAttribute('disabled')
+    }
+  }
+
 // Записываем в переменную коллекцию инпутов, на каждый инпут вешаем обработчик на событии "input", который вызывает функции проверки валидности и включения/выключения кнопки.
 
   const setEventListeners = (formElement, config) => {
@@ -61,24 +73,3 @@ const hideInputError = (formElement, inputElement, config) => {
       return !inputElement.validity.valid;
     })
   };
-
-// Включаем/выключаем кнопку в зависимости от результата функции hasInvalidInput путем добавлени/   удаления класса и установки/удаления аттрибута disabled.
-
-  const toggleButtonState = (inputList, buttonElement, config) => {
-    if (hasInvalidInput(inputList)) {
-      buttonElement.classList.add(config.inactiveButtonClass)
-      buttonElement.setAttribute('disabled', '')    
-    } else {
-      buttonElement.classList.remove(config.inactiveButtonClass)
-      buttonElement.removeAttribute('disabled')
-    }
-  }
-
-  enableValidation({
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active'
-  });

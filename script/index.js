@@ -13,7 +13,7 @@ const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
 const addPopupForm = addPopup.querySelector('.popup__add-form')
 
-const popupButton = addPopup.querySelector('.popup__button')
+const popupButton = document.querySelector('.popup__button')
 
 const zoomPopup = document.querySelector('.popup_zoom')
 const zoomPopupImage = zoomPopup.querySelector('.popup__image')
@@ -28,6 +28,12 @@ const profileSubheader = profile.querySelector('.profile__subheader')
 
 const photoGrid = document.querySelector('.photo-grid')
 const cardTemplateContent = photoGrid.querySelector('.photo-grid__template').content
+
+const config = {
+  formSelector: '.popup__form', inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button', inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error', errorClass: 'popup__input-error_active'
+}
 
 // Из этого массива создаем галерею
 
@@ -91,40 +97,65 @@ const toggleLike = (event) => {
 
 // Делаем видимыми/невидимыми попапы добавлением класса
 
-const togglePopup = (popupName) => {
-  popupName.classList.toggle('popup_opened')
+const openPopups = (popupName) => {
+  popupName.classList.add('popup_opened')
+}
+
+const closePopups = (popupName) => {
+  popupName.classList.remove('popup_opened')
+  console.log(popupName)
   inputsErrorReset(popupName)
 }
+
+// Закрываем попапы при нажатии "Esc" и вызываем функцию удаления слушателя.
+
+const closePopupOnEsc = () => {
+  if (event.key === "Escape") { 
+    closePopups(document.querySelector('.popup_opened'))
+    removePopupEventListeners()
+  }
+}
+
+// Добавление слушателя "keydown" в попапе.
+
+const addPopupEventListeners = () => {
+  document.addEventListener('keydown', closePopupOnEsc)
+}
+
+// Удаление слушателя "keydown" в попапе.
+
+const removePopupEventListeners = () => {
+  document.removeEventListener('keydown', closePopupOnEsc)
+}
+
+// Закрываем попапы при нажатии на "overlay" или "крестик"
+
+allPopups.forEach(popup => popup.addEventListener('mousedown', (event) => { 
+if (event.target.classList.contains('popup__close-button') || 
+    event.target == event.currentTarget) { 
+    closePopups(event.currentTarget) 
+    removePopupEventListeners()
+  }
+}))
 
 // Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
 
 const inputsErrorReset = (popupName) => {
-    if (popupName.classList.contains('popup_edit')) {
-    popupName.querySelectorAll('.popup__input').forEach(input => {
-      input.classList.remove('popup__input_type_error')
-    })
-    popupName.querySelectorAll('.popup__input-error').forEach(inputError => {
-      inputError.classList.remove('popup__input-error_active')
-    })
-    popupName.querySelectorAll('.popup__button').forEach(button => {
-      button.classList.remove('popup__button_inactive')
-      button.removeAttribute('disabled')
-    })
-    popupName.querySelectorAll('.popup__button').forEach(button => {
-      button.classList.remove('popup__button_inactive')
-      button.removeAttribute('disabled')
-    })
-  }
+  if (popupName.classList.contains('popup_zoom')) { return }
+  popupButton.removeAttribute('disabled', '')
+  popupButton.classList.remove('popup__button_inactive')
+  const formElement = popupName.querySelector('.popup__form')
+  formElement.querySelectorAll('.popup__input').forEach(inputElement => {
+    hideInputError(formElement, inputElement, config)
+  })
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
 
 const addFormSubmitHandler = (event) => {
   event.preventDefault()
+  closePopups(addPopup)
   addCard()
-  togglePopup(addPopup)
-  popupButton.setAttribute('disabled', '')
-  popupButton.classList.add('popup__button_inactive')
 }
 
 // При сабмите формы редактирования профиля убираем ее с экрана и добавляем значения полей в нужные места
@@ -133,7 +164,7 @@ const editFormSubmitHandler = (event) => {
   event.preventDefault()
   profileHeader.textContent = editPopupNameInput.value
   profileSubheader.textContent = editPopupJobInput.value
-  togglePopup(editPopup);
+  closePopups(editPopup)
 }
 
 // Вставляем значения в инпуты профайла
@@ -155,8 +186,6 @@ const zoomPopupImages = (event) => {
   if (event.target.classList.contains('photo-grid__image')) {
     zoomPopupImage.src = event.target.src
     zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
-    togglePopup(zoomPopup)
-    closePopupOnEsc()
   }
 }
 
@@ -170,45 +199,26 @@ initialCards.forEach((item) => {
 
 profileEditButton.addEventListener('click', () => {
   addInputValue()
-  togglePopup(editPopup)
-  closePopupOnEsc()
+  addPopupEventListeners()
+  openPopups(editPopup)
 })
 
 addButton.addEventListener('click', () => {
   clearInputs()
-  togglePopup(addPopup)
-  closePopupOnEsc()
+  addPopupEventListeners()
+  openPopups(addPopup)
 })
 
-const addEscListeners = (event) => {
-    if (event.key === "Escape") { 
-      event.currentTarget.classList.remove('popup_opened')
-    }
-}
-
-// Закрываем попапы при нажатии "Esc"
-
-const closePopupOnEsc = () => allPopups.forEach(popup => {
-  if (popup.classList.contains('popup_opened')) {
-    popup.focus()
-    popup.addEventListener('keydown', addEscListeners)
-  } else {
-    popup.removeEventListener('keydown', addEscListeners)
-  }
+photoGrid.addEventListener('click', (event) => {
+  zoomPopupImages(event)
+  addPopupEventListeners()
+  openPopups(zoomPopup)
 })
 
-// Закрываем попапы при нажатии на "overlay" или "крестик"
-
-allPopups.forEach(popup => popup.addEventListener('click', () => { 
-  if (event.target.classList.contains('popup__close-button') || 
-      event.target == event.currentTarget) { 
-      togglePopup(event.currentTarget) 
-    }
-  }))
-
-photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
 photoGrid.addEventListener('click', removeCard)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
+
+enableValidation(config);
