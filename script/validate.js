@@ -56,7 +56,7 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 // Записываем в переменную все формы на странице, для каждой формы делаем отмену дефолтного поведения на submit передаем форму в функцию установки обработчиков на инпуты.
   
   const enableValidation = (config) => {
-    const formList = Array.from(document.querySelectorAll(config.formSelector));
+    const formList = document.querySelectorAll(config.formSelector);
     formList.forEach(formElement => {
       formElement.addEventListener('submit', (event) => {
         event.preventDefault()
