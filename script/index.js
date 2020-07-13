@@ -1,28 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// НЕ ПРОВЕРЯЙТЕ ПОЖАЛУЙСТА РАБОТУ Я ОБНАРУЖИЛ ОШИБКУ СЕЙЧАС ИСПРАВЛЮ И ОТПРАВЛЮ ПО НОВОЙ
-
 "use strict"
 
 // Находим элементы в DOM
@@ -124,10 +99,12 @@ const toggleLike = (event) => {
 
 const openPopups = (popupName) => {
   popupName.classList.add('popup_opened')
+  document.addEventListener('keydown', closePopupOnEsc)
 }
 
 const closePopups = (popupName) => {
   popupName.classList.remove('popup_opened')
+  document.removeEventListener('keydown', closePopupOnEsc)
   inputsErrorsReset(popupName, config)
 }
 
@@ -136,20 +113,7 @@ const closePopups = (popupName) => {
 const closePopupOnEsc = () => {
   if (event.key === "Escape") { 
     closePopups(document.querySelector('.popup_opened'))
-    removePopupEventListeners()
   }
-}
-
-// Добавление слушателя "keydown" в попапе.
-
-const addPopupEventListeners = () => {
-  document.addEventListener('keydown', closePopupOnEsc)
-}
-
-// Удаление слушателя "keydown" в попапе.
-
-const removePopupEventListeners = () => {
-  document.removeEventListener('keydown', closePopupOnEsc)
 }
 
 // Закрываем попапы при нажатии на "overlay" или "крестик"
@@ -158,7 +122,6 @@ allPopups.forEach(popup => popup.addEventListener('mousedown', (event) => {
 if (event.target.classList.contains('popup__close-button') || 
     event.target == event.currentTarget) { 
     closePopups(event.currentTarget) 
-    removePopupEventListeners()
   }
 }))
 
@@ -210,6 +173,7 @@ const zoomPopupImages = (event) => {
   if (event.target.classList.contains('photo-grid__image')) {
     zoomPopupImage.src = event.target.src
     zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
+    openPopups(zoomPopup)
   }
 }
 
@@ -223,24 +187,17 @@ initialCards.forEach((item) => {
 
 profileEditButton.addEventListener('click', () => {
   addInputValue()
-  addPopupEventListeners(editPopup)
   openPopups(editPopup)
 })
 
 addButton.addEventListener('click', () => {
   clearInputs()
-  addPopupEventListeners(addPopup)
   openPopups(addPopup)
 })
 
-photoGrid.addEventListener('click', (event) => {
-  zoomPopupImages(event)
-  addPopupEventListeners(zoomPopup)
-  openPopups(zoomPopup)
-})
-
-photoGrid.addEventListener('mousedown', toggleLike)
-photoGrid.addEventListener('mousedown', removeCard)
+photoGrid.addEventListener('click', toggleLike)
+photoGrid.addEventListener('click', removeCard)
+photoGrid.addEventListener('click', zoomPopupImages)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
