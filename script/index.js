@@ -198,24 +198,24 @@ initialCards.forEach((item) => {
 
 profileEditButton.addEventListener('click', () => {
   addInputValue()
-  addPopupEventListeners()
+  addPopupEventListeners(editPopup)
   openPopups(editPopup)
 })
 
 addButton.addEventListener('click', () => {
   clearInputs()
-  addPopupEventListeners()
+  addPopupEventListeners(addPopup)
   openPopups(addPopup)
 })
 
 photoGrid.addEventListener('click', (event) => {
   zoomPopupImages(event)
-  addPopupEventListeners()
+  addPopupEventListeners(zoomPopup)
   openPopups(zoomPopup)
 })
 
-photoGrid.addEventListener('click', toggleLike)
-photoGrid.addEventListener('click', removeCard)
+photoGrid.addEventListener('mousedown', toggleLike)
+photoGrid.addEventListener('mousedown', removeCard)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
