@@ -30,8 +30,8 @@ const hideInputError = (formElement, inputElement, config) => {
 
 // Проверяем на наличие не валидных инпутов, получаем все инпуты и проверяем есть ли среди них не валидный.
 
-const hasInvalidInput = (inputList) => {
-    return inputList.some((inputElement) => {
+const hasInvalidInput = (inputsList) => {
+    return inputsList.some((inputElement) => {
       return !inputElement.validity.valid;
     })
   };
@@ -39,8 +39,8 @@ const hasInvalidInput = (inputList) => {
 
 // Включаем/выключаем кнопку в зависимости от результата функции hasInvalidInput путем добавлени/   удаления класса и установки/удаления аттрибута disabled.
 
-const toggleButtonState = (inputList, buttonElement, config) => {
-    if (hasInvalidInput(inputList)) {
+const toggleButtonState = (inputsList, buttonElement, config) => {
+    if (hasInvalidInput(inputsList)) {
       buttonElement.classList.add(config.inactiveButtonClass)
       buttonElement.setAttribute('disabled', '')    
     } else {
@@ -52,12 +52,12 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 // Записываем в переменную коллекцию инпутов, на каждый инпут вешаем обработчик на событии "input", который вызывает функции проверки валидности и включения/выключения кнопки.
 
   const setEventListeners = (formElement, config) => {
-    const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+    const inputsList = Array.from(formElement.querySelectorAll(config.inputSelector));
     const buttonElement = formElement.querySelector(config.submitButtonSelector)
-    inputList.forEach((inputElement) => {
-      inputElement.addEventListener('input', function () {
+    inputsList.forEach((inputElement) => {
+      inputElement.addEventListener('input', () => {
         checkInputValidity(formElement, inputElement, config);
-        toggleButtonState(inputList, buttonElement, config)
+        toggleButtonState(inputsList, buttonElement, config)
       });
     });
   };

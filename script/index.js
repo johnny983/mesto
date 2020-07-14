@@ -13,8 +13,6 @@ const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
 const addPopupForm = addPopup.querySelector('.popup__add-form')
 
-const popupButton = document.querySelector('.popup__button')
-
 const zoomPopup = document.querySelector('.popup_zoom')
 const zoomPopupImage = zoomPopup.querySelector('.popup__image')
 const zoomPopupCaption = zoomPopup.querySelector('.popup__caption')
@@ -61,6 +59,8 @@ const initialCards = [
   alt: 'Заснеженные горные склоны'}
 ];
 
+// !!!!!!!!!! Вы написали cardItem "переменная не используется", но она используется в функциях ниже.
+
 const cardItem = {
   name: addPopupTitleInput.value, 
   link: addPopupLinkInput.value,
@@ -103,12 +103,12 @@ const toggleLike = (event) => {
 
 const openPopup = (popupName) => {
   popupName.classList.add('popup_opened')
-  document.addEventListener('keydown', closePopupOnEsc)
+  addEscListener()
 }
 
 const closePopup = (popupName) => {
+  removeEscListener()
   popupName.classList.remove('popup_opened')
-  document.removeEventListener('keydown', closePopupOnEsc)
 }
 
 // Закрываем попапы при нажатии "Esc" и вызываем функцию удаления слушателя.
@@ -130,15 +130,19 @@ if (event.target.classList.contains('popup__close-button') ||
 
 // Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
 
-const inputsErrorsReset = (popupName, config) => {
+const resetInputsErrors = (popupName, config) => {
   const formElement = popupName.querySelector(config.formSelector)
-    formElement.querySelectorAll(config.inputSelector).forEach(inputElement => {
+  const inputElements = popupName.querySelectorAll(config.inputSelector)
+  const inputsList = Array.from(inputElements)
+
+  // !!!!!!!!!! Вы написали "inputsList и следует найти этот массив раньше, чтобы использовать для вызова hideInputError"
+  // я на всякий случай перенес его вверх к остальным константам, но он используется только для toggleButtonState
+
+  inputElements.forEach(inputElement => {
       hideInputError(formElement, inputElement, config)
     })
-
-  const inputList = Array.from(popupName.querySelectorAll(config.inputSelector))
   const buttonElement = popupName.querySelector(config.submitButtonSelector)
-  toggleButtonState(inputList, buttonElement, config)
+  toggleButtonState(inputsList, buttonElement, config)
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
@@ -161,16 +165,16 @@ const editFormSubmitHandler = (event) => {
 // Вставляем значения в инпуты профайла
 
 const addInputValue = (popupName) => {
-    editPopupNameInput.value = profileHeader.textContent
-    editPopupJobInput.value = profileSubheader.textContent
-    inputsErrorsReset(popupName, config)
+  editPopupNameInput.value = profileHeader.textContent
+  editPopupJobInput.value = profileSubheader.textContent
+  resetInputsErrors(popupName, config)
 }
 
 // Очищаем инпуты
 
 const clearInputs = (popupName) => {
   addPopupForm.reset()
-  inputsErrorsReset(popupName, config)
+  resetInputsErrors(popupName, config)
 }
 
 // Добавляем src и описание картинки
@@ -207,5 +211,13 @@ photoGrid.addEventListener('click', removeCard)
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
+
+const addEscListener = () => {
+  document.addEventListener('keydown', closePopupOnEsc)
+}
+
+const removeEscListener = () => {
+  document.removeEventListener('keydown', closePopupOnEsc)
+}
 
 enableValidation(config);
