@@ -30,9 +30,12 @@ const photoGrid = document.querySelector('.photo-grid')
 const cardTemplateContent = photoGrid.querySelector('.photo-grid__template').content
 
 const config = {
-  formSelector: '.popup__form', inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button', inactiveButtonClass: 'popup__button_inactive',
-  inputErrorClass: 'popup__input_type_error', errorClass: 'popup__input-error_active'
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
 }
 
 // Из этого массива создаем галерею
@@ -58,25 +61,26 @@ const initialCards = [
   alt: 'Заснеженные горные склоны'}
 ];
 
+const cardItem = {
+  name: addPopupTitleInput.value, 
+  link: addPopupLinkInput.value,
+  value: addPopupTitleInput.value
+}
+
 // Создаем карточку и добавляем путь картинки, альт-текст и название карточки.
 
-const createCard = (item) => {
+const createCard = (cardItem) => {
     const card = cardTemplateContent.cloneNode(true)
-    card.querySelector('.photo-grid__image').src = item.link
-    card.querySelector('.photo-grid__image').alt = item.alt
-    card.querySelector('.photo-grid__caption').textContent = item.name
+    card.querySelector('.photo-grid__image').src = cardItem.link
+    card.querySelector('.photo-grid__image').alt = cardItem.alt
+    card.querySelector('.photo-grid__caption').textContent = cardItem.name
     return card
   }
 
 // Создаем объект и передаем его для создания карточки
 
-const addCard = () => {
-  const item = {
-    name: addPopupTitleInput.value, 
-    link: addPopupLinkInput.value,
-    value: addPopupTitleInput.value
-  }
-  photoGrid.prepend(createCard(item))
+const addCard = (cardItem) => {
+  photoGrid.prepend(createCard(cardItem))
 }
 
 // Удаляет карточку при нажатии на "мусорку"
@@ -97,22 +101,21 @@ const toggleLike = (event) => {
 
 // Делаем видимыми/невидимыми попапы добавлением класса
 
-const openPopups = (popupName) => {
+const openPopup = (popupName) => {
   popupName.classList.add('popup_opened')
   document.addEventListener('keydown', closePopupOnEsc)
 }
 
-const closePopups = (popupName) => {
+const closePopup = (popupName) => {
   popupName.classList.remove('popup_opened')
   document.removeEventListener('keydown', closePopupOnEsc)
-  inputsErrorsReset(popupName, config)
 }
 
 // Закрываем попапы при нажатии "Esc" и вызываем функцию удаления слушателя.
 
-const closePopupOnEsc = () => {
+const closePopupOnEsc = (event) => {
   if (event.key === "Escape") { 
-    closePopups(document.querySelector('.popup_opened'))
+    closePopup(document.querySelector('.popup_opened'))
   }
 }
 
@@ -121,27 +124,28 @@ const closePopupOnEsc = () => {
 allPopups.forEach(popup => popup.addEventListener('mousedown', (event) => { 
 if (event.target.classList.contains('popup__close-button') || 
     event.target == event.currentTarget) { 
-    closePopups(event.currentTarget) 
+    closePopup(event.currentTarget) 
   }
 }))
 
 // Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
 
 const inputsErrorsReset = (popupName, config) => {
-  if (popupName === zoomPopup) { return }
-  popupButton.removeAttribute('disabled', '')
-  popupButton.classList.remove(config.inactiveButtonClass)
   const formElement = popupName.querySelector(config.formSelector)
-  formElement.querySelectorAll(config.inputSelector).forEach(inputElement => {
-    hideInputError(formElement, inputElement, config)
-  })
+    formElement.querySelectorAll(config.inputSelector).forEach(inputElement => {
+      hideInputError(formElement, inputElement, config)
+    })
+
+  const inputList = Array.from(popupName.querySelectorAll(config.inputSelector))
+  const buttonElement = popupName.querySelector(config.submitButtonSelector)
+  toggleButtonState(inputList, buttonElement, config)
 }
 
 // При сабмите формы добавления, убираем ее с экрана и вызываем функцию добавления карточки
 
 const addFormSubmitHandler = (event) => {
   event.preventDefault()
-  closePopups(addPopup)
+  closePopup(addPopup)
   addCard()
 }
 
@@ -151,20 +155,22 @@ const editFormSubmitHandler = (event) => {
   event.preventDefault()
   profileHeader.textContent = editPopupNameInput.value
   profileSubheader.textContent = editPopupJobInput.value
-  closePopups(editPopup)
+  closePopup(editPopup)
 }
 
 // Вставляем значения в инпуты профайла
 
-const addInputValue = () => {
+const addInputValue = (popupName) => {
     editPopupNameInput.value = profileHeader.textContent
     editPopupJobInput.value = profileSubheader.textContent
+    inputsErrorsReset(popupName, config)
 }
 
 // Очищаем инпуты
 
-const clearInputs = () => {
+const clearInputs = (popupName) => {
   addPopupForm.reset()
+  inputsErrorsReset(popupName, config)
 }
 
 // Добавляем src и описание картинки
@@ -173,36 +179,27 @@ const zoomPopupImages = (event) => {
   if (event.target.classList.contains('photo-grid__image')) {
     zoomPopupImage.src = event.target.src
     zoomPopupCaption.textContent = event.target.closest('.photo-grid__item').innerText
-    openPopups(zoomPopup)
+    openPopup(zoomPopup)
   }
 }
 
 // Собираем галерею карточек с фотографиями на загрузке страницы из массива
 
-initialCards.forEach((item) => {
-  photoGrid.append(createCard(item))
+initialCards.forEach((cardItem) => {
+  photoGrid.append(createCard(cardItem))
 })
 
 // Слушатели событий
 
 profileEditButton.addEventListener('click', () => {
-  addInputValue()
-  openPopups(editPopup)
+  addInputValue(editPopup)
+  openPopup(editPopup)
 })
 
 addButton.addEventListener('click', () => {
-  clearInputs()
-  openPopups(addPopup)
+  clearInputs(addPopup)
+  openPopup(addPopup)
 })
-
-// !!!!!!!!!!!!!!!!!! Не могли бы вы подсказать почему данная функция не работает?
-
-// photoGrid.addEventListener('click', () => {
-//   toggleLike()
-//   removeCard()
-//   zoomPopupImages(event)
-//   openPopups(zoomPopup)
-// })
 
 photoGrid.addEventListener('click', zoomPopupImages)
 photoGrid.addEventListener('click', toggleLike)
