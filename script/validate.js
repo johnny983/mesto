@@ -28,6 +28,15 @@ const hideInputError = (formElement, inputElement, config) => {
     }
   };
 
+// Проверяем на наличие не валидных инпутов, получаем все инпуты и проверяем есть ли среди них не валидный.
+
+const hasInvalidInput = (inputList) => {
+    return inputList.some((inputElement) => {
+      return !inputElement.validity.valid;
+    })
+  };
+
+
 // Включаем/выключаем кнопку в зависимости от результата функции hasInvalidInput путем добавлени/   удаления класса и установки/удаления аттрибута disabled.
 
 const toggleButtonState = (inputList, buttonElement, config) => {
@@ -64,12 +73,3 @@ const toggleButtonState = (inputList, buttonElement, config) => {
         setEventListeners(formElement, config)
     })
   }
-
-// Проверяем на наличие не валидных инпутов, получаем все инпуты и проверяем есть ли среди них не валидный.
-
-
-  const hasInvalidInput = (inputList) => {
-    return inputList.some((inputElement) => {
-      return !inputElement.validity.valid;
-    })
-  };
