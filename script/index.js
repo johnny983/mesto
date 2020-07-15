@@ -59,14 +59,6 @@ const initialCards = [
   alt: 'Заснеженные горные склоны'}
 ];
 
-// !!!!!!!!!! Вы написали cardItem "переменная не используется", но она используется в функциях ниже.
-
-const cardItem = {
-  name: addPopupTitleInput.value, 
-  link: addPopupLinkInput.value,
-  value: addPopupTitleInput.value
-}
-
 // Создаем карточку и добавляем путь картинки, альт-текст и название карточки.
 
 const createCard = (cardItem) => {
@@ -79,7 +71,12 @@ const createCard = (cardItem) => {
 
 // Создаем объект и передаем его для создания карточки
 
-const addCard = (cardItem) => {
+const addCard = () => {
+  const cardItem = {
+    name: addPopupTitleInput.value, 
+    link: addPopupLinkInput.value,
+    value: addPopupTitleInput.value
+  }
   photoGrid.prepend(createCard(cardItem))
 }
 
