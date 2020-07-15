@@ -131,10 +131,6 @@ const resetInputsErrors = (popupName, config) => {
   const formElement = popupName.querySelector(config.formSelector)
   const inputElements = popupName.querySelectorAll(config.inputSelector)
   const inputsList = Array.from(inputElements)
-
-  // !!!!!!!!!! Вы написали "inputsList и следует найти этот массив раньше, чтобы использовать для вызова hideInputError"
-  // я на всякий случай перенес его вверх к остальным константам, но он используется только для toggleButtonState
-
   inputElements.forEach(inputElement => {
       hideInputError(formElement, inputElement, config)
     })
