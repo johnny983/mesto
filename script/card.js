@@ -2,7 +2,6 @@ const photoGrid = document.querySelector('.photo-grid')
 const cardTemplateContent = photoGrid.querySelector('.photo-grid__template').content
 const popupElement = document.querySelector('.popup');
 
-
 import { addEscListener, removeEscListener } from './index.js'
 
 export class Card {
