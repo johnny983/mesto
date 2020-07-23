@@ -1,9 +1,9 @@
 "use strict"
 
 import { config } from './validationConfig.js'
-import { enableValidation } from './FormValidator.js'
+import { enableValidation } from './formValidator.js'
 import { initialCards } from './initialCardsData.js'
-import { Card } from './Card.js'
+import { Card } from './card.js'
 
 // Находим элементы в DOM
 const allPopups = document.querySelectorAll('.popup')
