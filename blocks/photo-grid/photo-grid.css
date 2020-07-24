@@ -6,7 +6,7 @@
   grid-template-columns: repeat(auto-fit, minmax(282px, 282px));
 } 
 
-@media screen and (max-width : 635px) {
+@media screen and (max-width : 1024px) {
 .photo-grid {
   grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
   }
