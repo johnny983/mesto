@@ -1,4 +1,4 @@
-class FormValidator {
+export default class FormValidator {
   _showInputError(formElement, inputElement, errorMessage, config) {
       const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
       errorElement.textContent = errorMessage;
@@ -46,22 +46,3 @@ class FormValidator {
     });
   };
 }
-
-const enableValidation = (config) => {
-  const formList = document.querySelectorAll(config.formSelector);
-  formList.forEach(formElement => {
-    formElement.addEventListener('submit', (event) => {
-      event.preventDefault()
-    })
-    const inputsList = Array.from(formElement.querySelectorAll(config.inputSelector))
-    const buttonElement = formElement.querySelector(config.submitButtonSelector)
-    const ValidatedForm = new FormValidator(formElement, config)
-      inputsList.forEach((inputElement) => {
-        ValidatedForm._hideInputError(formElement, inputElement, config)
-        });
-      ValidatedForm._toggleButtonState(inputsList, buttonElement, config)
-      ValidatedForm._setEventListeners(formElement, buttonElement, inputsList, config)
-  })
-}
-
-export { enableValidation }

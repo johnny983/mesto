@@ -1,9 +1,8 @@
 "use strict"
 
-import { config } from './validationConfig.js'
-import { enableValidation } from './FormValidator.js'
-import { initialCards } from './initialCardsData.js'
-import { Card } from './Card.js'
+import { config, initialCards } from './utils.js'
+import Card from './Card.js'
+import FormValidator from './FormValidator.js'
 
 // Находим элементы в DOM
 const allPopups = document.querySelectorAll('.popup')
@@ -27,13 +26,19 @@ const profileSubheader = profile.querySelector('.profile__subheader')
 
 const photoGrid = document.querySelector('.photo-grid')
 
+// Создаем первичную галерею карточек
+
 const renderElements = () => {
   initialCards.forEach((item) => {
-    const card = new Card(item)
+    const card = new Card(item, '.photo-grid')
     const cardElement = card.generateCard();
     photoGrid.append(cardElement);
   });
 };
+
+renderElements();
+
+// Добавляем пользовательскую карточку
 
 const addUserCard = () => {
   const item = {
@@ -41,12 +46,20 @@ const addUserCard = () => {
     link: addPopupLinkInput.value,
     value: addPopupTitleInput.value
   }
-  const card = new Card(item)
+  const card = new Card(item, '.photo-grid')
   const cardElement = card.generateCard();
   photoGrid.prepend(cardElement);
 }
 
-renderElements();
+// Добавляем слушатели на нажатие клавишы
+
+const addEscListener = () => {
+  document.addEventListener('keydown', closePopupOnEsc)
+}
+
+const removeEscListener = () => {
+  document.removeEventListener('keydown', closePopupOnEsc)
+}
 
 // Делаем видимыми/невидимыми попапы добавлением класса
 
@@ -59,6 +72,8 @@ const closePopup = (popupName) => {
   removeEscListener()
   popupName.classList.remove('popup_opened')
 }
+
+// Вызываем функцию закрытия попапов при нажатии на Esc
 
 const closePopupOnEsc = (event) => {
   if (event.key === "Escape") { 
@@ -92,9 +107,28 @@ const editFormSubmitHandler = (event) => {
   closePopup(editPopup)
 }
 
+// Запускаем валидацию формы
+
+const enableValidation = (config) => {
+  const formList = document.querySelectorAll(config.formSelector);
+  formList.forEach(formElement => {
+    formElement.addEventListener('submit', (event) => {
+      event.preventDefault()
+    })
+    const inputsList = Array.from(formElement.querySelectorAll(config.inputSelector))
+    const buttonElement = formElement.querySelector(config.submitButtonSelector)
+    const ValidatedForm = new FormValidator(formElement, config)
+      inputsList.forEach((inputElement) => {
+        ValidatedForm._hideInputError(formElement, inputElement, config)
+        });
+      ValidatedForm._toggleButtonState(inputsList, buttonElement, config)
+      ValidatedForm._setEventListeners(formElement, buttonElement, inputsList, config)
+  })
+}
+
 // Вставляем значения в инпуты профайла
 
-const addInputValue = (popupName) => {
+const addInputValue = () => {
   editPopupNameInput.value = profileHeader.textContent
   editPopupJobInput.value = profileSubheader.textContent
   enableValidation(config)
@@ -102,7 +136,7 @@ const addInputValue = (popupName) => {
 
 // Очищаем инпуты
 
-const clearInputs = (popupName) => {
+const clearInputs = () => {
   addPopupForm.reset()
   enableValidation(config)
 }
@@ -121,66 +155,3 @@ profileEditButton.addEventListener('click', () => {
 
 editPopupForm.addEventListener('submit', editFormSubmitHandler)
 addPopupForm.addEventListener('submit', addFormSubmitHandler)
-
-export const addEscListener = () => {
-  document.addEventListener('keydown', closePopupOnEsc)
-}
-
-export const removeEscListener = () => {
-  document.removeEventListener('keydown', closePopupOnEsc)
-}
-
-// class Popup {
-//   constructor (popupType) {
-//     this._popupType = popupType
-//   }
-  
-//   handleOpenPopup() {
-//     popupElement.querySelector('.popup__image').src = this._link
-//     popupElement.querySelector('.popup__caption').textContent = this._name
-//     popupElement.querySelector('.popup__image').alt = this._alt
-//     popupElement.classList.add('popup_opened');
-//   }
-
-//   _handleClosePopup() {
-//     popupElement.classList.remove('popup_opened');
-//   }
-// }
-
-// popupOpenButtons.forEach(popupOpenButton => { 
-//   popupOpenButton.addEventListener('click', () => {
-//   if (event.target.classList.contains('profile__edit-button')) {
-//     const getPopup = new Popup(editPopup)
-//     // addInputValue(editPopup)
-//     getPopup.handleOpenPopup()
-//   }
-//   // if (event.target.classList.contains('profile__add-button')) {}
-//   //   const getPopup = new Popup(addPopup)
-//   //   clearInputs(addPopup)
-//   //   getPopup._handleOpenPopup(editPopup)
-//   })
-// })
-
-// Записываем в переменную все формы на странице, для каждой формы делаем отмену дефолтного поведения на submit передаем форму в функцию установки обработчиков на инпуты.
-
-// class Popup extends Card {
-//   _setEventListeners() {
-//     this._element.closest('.popup').addEventListener('click', () => {
-//       if (event.target == event.currentTarget)
-//       super._handleClosePopup(event.currentTarget);
-//     });
-//   }
-// }
-
-// Сбрасываем ошибки в случае если клиент закрыл ошибочную форму и открыл опять
-
-// const resetInputsErrors = (popupName, config) => {
-//   const formElement = popupName.querySelector(config.formSelector)
-//   const inputElements = popupName.querySelectorAll(config.inputSelector)
-//   const inputsList = Array.from(inputElements)
-//   inputElements.forEach(inputElement => {
-//       _hideInputError(formElement, inputElement, config)
-//     })
-//   const buttonElement = popupName.querySelector(config.submitButtonSelector)
-//   _toggleButtonState(inputsList, buttonElement, config)
-// }

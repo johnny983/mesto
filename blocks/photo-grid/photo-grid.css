@@ -3,10 +3,10 @@
   display: grid;
   grid-column-gap: 18px;
   grid-row-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(282px, 0.5fr));
-}
+  grid-template-columns: repeat(auto-fit, minmax(282px, 0.33fr));
+} 
 
-@media screen and (max-width : 620px) {
+@media screen and (max-width : 635px) {
 .photo-grid {
   grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
   }
