@@ -3,7 +3,7 @@
   display: grid;
   grid-column-gap: 18px;
   grid-row-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(282px, 0.33fr));
+  grid-template-columns: repeat(auto-fit, minmax(282px, 282px));
 } 
 
 @media screen and (max-width : 635px) {
