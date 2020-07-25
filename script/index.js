@@ -30,7 +30,7 @@ const photoGrid = document.querySelector('.photo-grid')
 
 const renderElements = () => {
   initialCards.forEach((item) => {
-    const card = new Card(item, '.photo-grid')
+    const card = new Card(item, '.photo-grid__template')
     const cardElement = card.generateCard();
     photoGrid.append(cardElement);
   });
@@ -46,7 +46,7 @@ const addUserCard = () => {
     link: addPopupLinkInput.value,
     value: addPopupTitleInput.value
   }
-  const card = new Card(item, '.photo-grid')
+  const card = new Card(item, '.photo-grid__template')
   const cardElement = card.generateCard();
   photoGrid.prepend(cardElement);
 }

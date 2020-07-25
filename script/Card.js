@@ -1,5 +1,4 @@
 const photoGrid = document.querySelector('.photo-grid')
-const cardTemplateContent = photoGrid.querySelector('.photo-grid__template').content
 const popupElement = document.querySelector('.popup')
 const popupImage = popupElement.querySelector('.popup__image')
 
@@ -12,7 +11,7 @@ export default class Card {
     }
   
     _getTemplate() {
-      const cardElement = cardTemplateContent.cloneNode(true);
+      const cardElement = document.querySelector(this._cardSelector).content.cloneNode(true);
       return cardElement;
     }
   
