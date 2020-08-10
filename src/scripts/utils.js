@@ -1,21 +1,29 @@
+import photoGridOlkhon from '../images/photo-grid-olkhon.jpg'
+import photGridEbrus from '../images/photo-grid-elbrus.jpg'
+import photGridDombai from '../images/photo-grid-dombai.jpg'
+import photoGridKamchatka from '../images/photo-grid-kamchatka.jpg'
+import photoGridKlin from '../images/photo-grid-klin.jpg'
+import photoGridKhibiny from '../images/photo-grid-khibiny.jpg'
+
+
 export const initialCards = [
     {name: 'Ольхон', 
-    link: 'images/photo-grid-olkhon.jpg',
+    link: photoGridOlkhon,
     alt: 'Каменная глыба посреди замерзжего озера'},
     {name: 'Эльбрус', 
-    link: 'images/photo-grid-elbrus.jpg',
+    link: photGridEbrus,
     alt: 'Вид на гору издали на закате солнца'},
     {name: 'Домбай',
-    link: 'images/photo-grid-dombai.jpg',
+    link: photGridDombai,
     alt: 'Горные вершины Домбая'},
     {name: 'Камчатка',
-    link: 'images/photo-grid-kamchatka.jpg',
+    link: photoGridKamchatka,
     alt: 'Снежная горная вершина с высоты птичьего полета'},
     {name: 'Клин',
-    link: 'images/photo-grid-klin.jpg',
+    link: photoGridKlin,
     alt: 'Заброшенная здание церкви в поле'},
     {name: 'Хибины',
-    link: 'images/photo-grid-khibiny.jpg',
+    link: photoGridKhibiny,
     alt: 'Заснеженные горные склоны'}
   ];
 
@@ -27,3 +35,7 @@ export const config = {
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__input-error_active'
   }
+
+export const editPopup = document.querySelector('.popup_edit')
+export const editPopupNameInput  = editPopup.querySelector('.popup__input_name')
+export const editPopupJobInput = editPopup.querySelector('.popup__input_job')
