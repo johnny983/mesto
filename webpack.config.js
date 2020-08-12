@@ -3,11 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: { main: './src/scripts/index.js' },
+  entry: { main: './src/pages/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js'
   },
+
   module: {
     rules: [
       {
@@ -37,14 +38,12 @@ module.exports = {
             // добавьте объект options
             options: { importLoaders: 1 }
           }, 'postcss-loader']
-      },
+      }
     ]
   },
   plugins: [
     // настроили плагин
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    }),
-    new MiniCssExtractPlugin()
+    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new MiniCssExtractPlugin(),
   ]
 };

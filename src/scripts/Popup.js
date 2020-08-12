@@ -1,6 +1,3 @@
-import { enableValidation } from './index.js'
-import { config } from './utils.js'
-
 export default class Popup {
     constructor(popupSelector) {
       this._popup = document.querySelector(popupSelector)
@@ -34,6 +31,5 @@ export default class Popup {
       this._popup.addEventListener('click', this._handleOverlayClose)
       document.addEventListener('keydown', this._handleEscClose)
       this.setEventListeners()
-      enableValidation(config)
     }
   }

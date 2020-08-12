@@ -1,5 +1,4 @@
-import { enableValidation } from './index.js'
-import { config, editPopup, editPopupNameInput, editPopupJobInput } from './utils.js'
+import { editPopupNameInput, editPopupJobInput } from '../utils/constants.js'
 
 export default class UserInfo {
     constructor({ userName, userJob }) {
@@ -14,6 +13,5 @@ export default class UserInfo {
     setUserInfo() {
       this.userName.textContent = editPopupNameInput.value
       this.userJob.textContent = editPopupJobInput.value
-      enableValidation(config)
     }
   }
