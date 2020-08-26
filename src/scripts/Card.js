@@ -1,51 +1,86 @@
 export default class Card {
-    constructor (item, cardSelector, { handleCardClick }) {
-      this._name = item.name
-      this._link = item.link
-      this._alt = item.alt
-      this._cardSelector = cardSelector
-      this._handleCardClick = handleCardClick
-    }
-  
-    _getTemplate() {
-  	const cardElement = document
-      .querySelector(this._cardSelector)
-      .content
-      .querySelector('.photo-grid__item')
-      .cloneNode(true);
-      return cardElement;
-    }
-  
-    _setEventListeners() {
-      this._element.querySelector('.photo-grid__image').addEventListener('click', () => {
-          this._handleCardClick();
-        });
-  
-      this._element.querySelector('.photo-grid__like-button').addEventListener('click', () => {
-            this._toggleLike();
-      });
-      
-      this._element.querySelector('.photo-grid__trash-button').addEventListener('click', () => {
-            this._removeCard();
-      });
-    }
-  
-    _toggleLike() {
-      event.target.classList.toggle('liked')
-    }
-  
-    _removeCard() {
-      this._element.remove()
-      this._element = null
-    }
-  
-    generateCard() {
-      this._element = this._getTemplate();
-      this._setEventListeners();
-      const photoGridImage = this._element.querySelector('.photo-grid__image')
-        photoGridImage.src = this._link;
-        photoGridImage.alt = this._alt;
-      this._element.querySelector('.photo-grid__caption').textContent = this._name;
-      return this._element;
-      }
+  constructor (item, cardSelector, userId, { handleCardClick }, { getConfirmPopup }, { likeStateSetApi }) {
+    this._item = item
+    this._likeAmount = item.likes.length
+    this._likes = item.likes
+    this._userId = userId
+    this._cardSelector = cardSelector
+    this._handleCardClick = handleCardClick
+    this._getConfirmPopup = getConfirmPopup
+    this.likeStateSetApi = likeStateSetApi
   }
+
+  _getTemplate() {
+  const cardElement = document
+    .querySelector(this._cardSelector)
+    .content
+    .querySelector('.photo-grid__item')
+    .cloneNode(true);
+    return cardElement;
+  }
+
+  _setEventListeners() {
+    this._likeButton = this._element.querySelector('.photo-grid__like-button')
+    this._likesAmount = this._element.querySelector('.photo-grid__like-amount')
+    this._trashButton = this._element.querySelector('.photo-grid__trash-button')
+    this._photoGridImage = this._element.querySelector('.photo-grid__image')
+
+    this._photoGridImage.addEventListener('click', () => {
+      this._handleCardClick()
+    })
+
+    this._likeButton.addEventListener('click', () => {
+      this._likesAmountHandler()
+    })
+  
+    this._trashButton.addEventListener('click', () => {
+      this._getConfirmPopup(this._element)
+    })
+  }
+
+  lastCardState(result) {
+    this.result = result
+    this._item = this.result
+    this._likeAmount = this._item.likes.length
+    this._likes = this._item.likes
+  }
+
+  _likesAmountHandler() {
+    const myLike = this._likes.filter(like => {
+      return like._id === this._userId
+    })
+
+    if (myLike.length > 0) {
+      this._likeButton.classList.toggle('liked')
+      this._likesAmount.textContent = this._likes.length - 1
+      this.likeStateSetApi('del')
+
+    } else {
+      this._likeButton.classList.toggle('liked')
+      this._likesAmount.textContent = this._likes.length + 1
+      this.likeStateSetApi('put')
+    }
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+    this._setEventListeners();
+
+    this._photoGridImage.src = this._item.link;
+    this._photoGridImage.alt = this._item.alt;
+
+    this._element.querySelector('.photo-grid__caption').textContent = this._item.name;
+    this._likesAmount.textContent = this._likeAmount
+
+    this._likes.forEach(like => {
+      if (like._id === this._userId) {
+        this._likeButton.classList.add('liked')
+      }
+    })
+
+    if (this._item.owner._id !== this._userId) {
+      this._trashButton.style.display = "none"
+    }
+    return this._element;
+    }
+}

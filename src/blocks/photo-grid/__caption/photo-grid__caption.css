@@ -4,4 +4,6 @@
   line-height: 1.2;
   font-weight: 900;
   margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
