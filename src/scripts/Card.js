@@ -1,13 +1,13 @@
 export default class Card {
   constructor (item, cardSelector, userId, { handleCardClick }, { getConfirmPopup }, { likeStateSetApi }) {
     this._item = item
-    this._likeAmount = item.likes.length
     this._likes = item.likes
+    this._likeAmount = item.likes.length
     this._userId = userId
     this._cardSelector = cardSelector
     this._handleCardClick = handleCardClick
     this._getConfirmPopup = getConfirmPopup
-    this.likeStateSetApi = likeStateSetApi
+    this._likeStateSetApi = likeStateSetApi
   }
 
   _getTemplate() {
@@ -39,8 +39,7 @@ export default class Card {
   }
 
   lastCardState(result) {
-    this.result = result
-    this._item = this.result
+    this._item = result
     this._likeAmount = this._item.likes.length
     this._likes = this._item.likes
   }
@@ -53,12 +52,12 @@ export default class Card {
     if (myLike.length > 0) {
       this._likeButton.classList.toggle('liked')
       this._likesAmount.textContent = this._likes.length - 1
-      this.likeStateSetApi('del')
+      this._likeStateSetApi('DELETE')
 
     } else {
       this._likeButton.classList.toggle('liked')
       this._likesAmount.textContent = this._likes.length + 1
-      this.likeStateSetApi('put')
+      this._likeStateSetApi('PUT')
     }
   }
 

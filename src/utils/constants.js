@@ -48,6 +48,8 @@ export const avatarPopup = document.querySelector('.popup_avatar')
 export const avatarPopupButton = avatarPopup.querySelector('.popup__button')
 export const avatarPopupLinkInput = avatarPopup.querySelector('.popup__input_link')
 
+export const confirmPopupButton = document.querySelector('.confirm_button')
+
 export const profile = document.querySelector('.profile')
 export const addCardButton = profile.querySelector('.profile__add-button')
 export const profileEditButton = profile.querySelector('.profile__edit-button')
