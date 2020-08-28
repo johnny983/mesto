@@ -35,17 +35,14 @@ export const config = {
   }
 
 export const editPopup = document.querySelector('.popup_edit')
-export const editPopupButton = editPopup.querySelector('.popup__button')
 export const editPopupNameInput  = editPopup.querySelector('.popup__input_name')
 export const editPopupJobInput = editPopup.querySelector('.popup__input_job')
 
 export const addPopup = document.querySelector('.popup_add')
-export const addPopupButton = addPopup.querySelector('.popup__button')
 export const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 export const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
 
 export const avatarPopup = document.querySelector('.popup_avatar')
-export const avatarPopupButton = avatarPopup.querySelector('.popup__button')
 export const avatarPopupLinkInput = avatarPopup.querySelector('.popup__input_link')
 
 export const confirmPopupButton = document.querySelector('.confirm_button')

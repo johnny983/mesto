@@ -1,5 +1,5 @@
 export default class Card {
-  constructor (item, cardSelector, userId, { handleCardClick }, { getConfirmPopup }, { likeStateSetApi }) {
+  constructor (cardSelector, {item, userId, handleCardClick, getConfirmPopup, likeStateSetApi }) {
     this._item = item
     this._likes = item.likes
     this._likeAmount = item.likes.length
