@@ -4,9 +4,10 @@ import './index.css'
 
 import {
   config, addPopupTitleInput, addPopupLinkInput,
-  addCardButton, profileEditButton, photoGridTemplate, userId,
-  editPopupNameInput, editPopupJobInput, profileHeader, apiToken,
-  avatarPopupLinkInput, profileSubheader, profileImage,
+  addCardButton, profileEditButton, photoGridTemplate,addPopupButton, 
+  editPopupNameInput, editPopupJobInput, profileHeader, confirmPopupButton,
+  avatarPopupLinkInput, profileSubheader, profileImage, apiToken, 
+  userId, avatarPopupButton, editPopupButton
 } from '../utils/constants.js'
 
 import Card from '../components/Card.js'
@@ -25,17 +26,6 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 })
-
-const isLoading = (loading) => {
-  const activePopup = document.querySelector('.popup_opened')
-  const activePopupButton = activePopup.querySelector('.popup__button')
-
-  activePopupButton.textContent = loading ? 'Сохранение...' : 'Сохранить'
-
-  if (activePopupButton.classList.contains('confirm_button')) {
-    activePopupButton.textContent = loading ? 'Удаление...' : 'Да'
-  }
-} 
 
 const getProfileApi = api.getProfileApi('/users/me')
 const userInfo = new UserInfo('.profile__header', '.profile__subheader', '.profile__image')
@@ -65,12 +55,12 @@ Promise.all([getProfileApi, getCardsApi])
     popupSelector: '.popup_avatar', handleFormSubmit: () => {
       event.preventDefault()
       
-      isLoading(true)
+      avatarPopupButton.textContent = 'Сохранение...'
       const setAvatarApi = api.setAvatarApi('/users/me/avatar', 'PATCH', avatarPopupLinkInput.value)
       setAvatarApi.then((result) => { profileImage.style.backgroundImage = `url(${result.avatar})` })
-        .then(() => isLoading(false))
+        .then(() => changeAvatarPopup.close())
         .catch(error => console.log(error))
-        .finally(() => changeAvatarPopup.close())
+        .finally(() => avatarPopupButton.textContent = 'Сохранить')
     }
   })
 
@@ -87,12 +77,12 @@ Promise.all([getProfileApi, getCardsApi])
       },
       getConfirmPopup: (cardToDelete) => {
         confirmCardRemove.removeCardHandler(() => {
-          isLoading(true)
+          confirmPopupButton.textContent = 'Удаление...'
           api.cardRemoveApi(`/cards/${card._item._id}`, 'DELETE')
             .then(() => confirmCardRemove.localCardRemove(cardToDelete))
-            .then(() => isLoading(false))
+            .then(() => confirmCardRemove.close())
             .catch(error => console.log(error))
-            .finally(() => confirmCardRemove.close())
+            .finally(() => confirmPopupButton.textContent = 'Да')
         })
         confirmCardRemove.open()
       },
@@ -113,14 +103,14 @@ Promise.all([getProfileApi, getCardsApi])
     popupSelector: '.popup_add', handleFormSubmit: () => {
       event.preventDefault()
 
-      isLoading(true)
+      addPopupButton.textContent = 'Сохранение...'
       const userCardApi = api.userCardApi('/cards', 'POST', addPopupTitleInput, addPopupLinkInput)
   
       userCardApi
         .then(card => addCard(card))
-        .then(() => isLoading(false))
+        .then(() => newCardPopup.close())
         .catch(error => console.log(error))
-        .finally(() => newCardPopup.close())
+        .finally(() => addPopupButton.textContent = 'Создать')
     }
   })
 
@@ -140,7 +130,7 @@ Promise.all([getProfileApi, getCardsApi])
     popupSelector: '.popup_edit', handleFormSubmit: () => {
       event.preventDefault()
 
-      isLoading(true)
+      editPopupButton.textContent = 'Сохранение...'
       const editProfileInfoApi = api.editProfileInfoApi(
         '/users/me', 'PATCH', editPopupNameInput.value, editPopupJobInput.value)
 
@@ -148,9 +138,9 @@ Promise.all([getProfileApi, getCardsApi])
         profileHeader.textContent = data.name
         profileSubheader.textContent = data.about
       })
-        .then(() => isLoading(false))
+        .then(() => userPopup.close())
         .catch(error => console.log(error))
-        .finally(() => userPopup.close())
+        .finally(() => editPopupButton.textContent = 'Сохранить')
     }
   })
   userPopup.setEventListeners()

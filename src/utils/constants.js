@@ -1,31 +1,3 @@
-// import photoGridOlkhon from './../images/photo-grid-olkhon.jpg'
-// import photGridEbrus from './../images/photo-grid-elbrus.jpg'
-// import photGridDombai from './../images/photo-grid-dombai.jpg'
-// import photoGridKamchatka from './../images/photo-grid-kamchatka.jpg'
-// import photoGridKlin from './../images/photo-grid-klin.jpg'
-// import photoGridKhibiny from './../images/photo-grid-khibiny.jpg'
-
-// export const initialCards = [
-//     {name: 'Ольхон', 
-//     link: photoGridOlkhon,
-//     alt: 'Каменная глыба посреди замерзжего озера'},
-//     {name: 'Эльбрус', 
-//     link: photGridEbrus,
-//     alt: 'Вид на гору издали на закате солнца'},
-//     {name: 'Домбай',
-//     link: photGridDombai,
-//     alt: 'Горные вершины Домбая'},
-//     {name: 'Камчатка',
-//     link: photoGridKamchatka,
-//     alt: 'Снежная горная вершина с высоты птичьего полета'},
-//     {name: 'Клин',
-//     link: photoGridKlin,
-//     alt: 'Заброшенная здание церкви в поле'},
-//     {name: 'Хибины',
-//     link: photoGridKhibiny,
-//     alt: 'Заснеженные горные склоны'}
-//   ];
-
 export const config = {
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__button',
@@ -35,17 +7,21 @@ export const config = {
   }
 
 export const editPopup = document.querySelector('.popup_edit')
+export const editPopupButton = editPopup.querySelector('.popup__button')
 export const editPopupNameInput  = editPopup.querySelector('.popup__input_name')
 export const editPopupJobInput = editPopup.querySelector('.popup__input_job')
 
 export const addPopup = document.querySelector('.popup_add')
+export const addPopupButton = addPopup.querySelector('.popup__button')
 export const addPopupTitleInput = addPopup.querySelector('.popup__input_title')
 export const addPopupLinkInput = addPopup.querySelector('.popup__input_link')
 
 export const avatarPopup = document.querySelector('.popup_avatar')
+export const avatarPopupButton = avatarPopup.querySelector('.popup__button')
 export const avatarPopupLinkInput = avatarPopup.querySelector('.popup__input_link')
 
-export const confirmPopupButton = document.querySelector('.confirm_button')
+export const confirmPopup = document.querySelector('.popup_confirm')
+export const confirmPopupButton = confirmPopup.querySelector('.confirm_button')
 
 export const profile = document.querySelector('.profile')
 export const addCardButton = profile.querySelector('.profile__add-button')
